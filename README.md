@@ -6,3 +6,8 @@ Author: Gene.W (wj742421292@gmail.com)
 
 Freatures:
   to be continued...
+
+
+
+# April 4, 2020, Start over again
+Rewrite the data structure of mooc lessons.

@@ -19,13 +19,13 @@ protected:
 	void copyFrom (T const *A, Rank lo, Rank hi);	//copy the A[lo,hi)
 	void expand();	//空间不足时扩容
 	void shrink();	//填装因子过小时压缩
-	bool bubble();	//scan & swap
-	void bubblesort();	//
+	bool bubble(Rank lo, Rank hi);	//scan & swap
+	void bubbleSort(Rank lo, Rank hi);	//
 	Rank max(Rank lo, Rank hi);	//select the max from[lo,hi)
 	void selectSort(Rank lo, Rank hi);
 	void merge(Rank lo, Rank mid, Rank hi);
 	void mergeSort(Rank lo, Rank hi);
-	Rank Partition(Rank lo, Rank hi);
+	Rank partition(Rank lo, Rank hi);
 	void quickSort(Rank lo, Rank hi);
 	void heapSort(Rank lo, Rank hi);
 
@@ -66,8 +66,7 @@ public:
 
 	//traverse
 	void traverse( void(*)(T&));		//pointer to function , read_only or modify partially
-	template <typename VST>
-	void traverse (VST &);		//function object, modify globally
+	template <typename VST>	void traverse (VST &);		//function object, modify globally
 //private:
 
 };

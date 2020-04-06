@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include "../_share/release.h"
+#include "../_share/util.h"
 
 //read_only interface begin
 
@@ -22,7 +24,7 @@ Vector<T>::disordered() const
 //find
 template <typename T>
 Rank
-Vector<T>::find(T const &e, Rank lo, Rank hi)
+Vector<T>::find(T const &e, Rank lo, Rank hi) const
 {
 	while ((lo<hi--) && (e != _elem[hi]));
 	return hi;
@@ -32,9 +34,9 @@ Vector<T>::find(T const &e, Rank lo, Rank hi)
 //search
 template<typename T>
 Rank
-Vector<T>::search(T const &e, Rank lo, Rank hi)
+Vector<T>::search(T const &e, Rank lo, Rank hi) const
 {
-	;	//to be done
+	return (rand() % 2) ? binSearch(_elem, e, lo, hi) : fibSearch(_elem, e, lo, hi);
 }
 
 //read_only interface end
@@ -59,19 +61,82 @@ Vector<T>::operator= (Vector<T> const &V)
 
 template <typename T>
 T
-Vecctor<T>::remove(Rank r)
+Vector<T>::remove(Rank r)	//delete the element of rank r, 0<=r<=size
 {
-	remove
+	T e = _elem[r];	//backup the deleted element
+	remove(r, r + 1);
+	return e;
 }
 
 
 template <typename T>
 int 
-Vector<T>::remove(Rank lo, Rank hi)
+Vector<T>::remove(Rank lo, Rank hi)	//remove Interval
 {
-	while ()
+	if (lo == hi) return 0;
+	while (hi < _size) _elem[lo++] = _elem[hi++];
+	_size = lo;
+	shrink();	//shrink if necessary
+	return hi - lo;
 }
 
+template <typename T>
+Rank
+Vector<T>::insert(Rank r, T const& e)	//insert e at rank r, assert 0<=r<=size
+{
+	expand();	//expand if necessary
+	for (int i = _size; i > r; i--) _elem[i] = _elem[i - 1];
+	_elem[r] = e;
+	_size++;
+	return r;
+}
+
+template <typename T>
+void
+Vector<T>::sort(Rank lo, Rank hi)	//vector interval sort
+{
+	switch (rand() % 5) {
+	case 1: bubbleSort(lo, hi); break;
+	case 2: selectSort(lo, hi); break;
+	case 3: mergeSort(lo, hi); break;
+	case 4: heapSort(lo, hi); break;
+	case 5: quickSort(lo, hi); break;
+	}
+}
+
+template <typename T>
+void
+Vector<T>::unsort(Rank lo, Rank hi)
+{
+	T* V = _elem + lo;
+	for (Rank i = hi - lo; i > 0; i--)
+		swap(V[i], V[rand() % i]);	//swap V[i-1] and V[0,i)
+}
+
+template <typename T>
+int
+Vector<T>::deduplicate()	//delete the duped element of unsorted vector
+{
+	int oldSize = _size;
+	Rank i = 1;
+	while (i < _size)
+		(find(_elem[i], 0, i) < 0) ? i++ : remove(i);
+	return oldSize - _size;
+
+}
+
+template <typename T>
+int
+Vector<T>::uniquify()	//delete the duped element of sorted vector
+{
+	Rank i = 0, j = 0;
+	while (++j < _size)
+		if (_elem[i] != _elem[j])
+			_elem[++i] = _elem[j];
+	_size = ++i;
+	shrink();
+	return j - i;
+}
 
 //bubble
 template <typename T>
@@ -93,9 +158,9 @@ Vector<T>::bubble(Rank lo, Rank hi)
 //bubblesort
 template <typename T>
 void
-Vector<T>::bubblesort()
+Vector<T>::bubbleSort(Rank lo, Rank hi)
 {
-	while (!bubble(lo, hi--);)
+	while (lo < (hi = bubble(lo, hi)));
 }
 
 
@@ -169,4 +234,18 @@ Vector<T>::shrink()
 		_elem[i] = oldElem[i];
 
 	delete[] oldElem;
+}
+
+template <typename T>
+void
+Vector<T>::traverse(void (*visit) (T&))	//fuction pointer
+{
+	for (int i = 0; i < _size; i++) visit(_elem[i]);
+}
+
+template <typename T> template <typename VST>	//function object
+void
+Vector<T>::traverse(VST& visit)
+{
+	for (int i = 0; i < _size; i++) visit(_elem[i]);
 }
