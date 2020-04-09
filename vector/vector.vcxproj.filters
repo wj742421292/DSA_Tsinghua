@@ -33,12 +33,51 @@
     <ClInclude Include="vector_implementation.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\_share\util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\release.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\rand.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\comparator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\checkOrder_Elem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\checkOrder_vector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\crc_Elem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\crc_vector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\hailstone_Elem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_share\double_Elem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vector_test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="permute.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="vector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UniPrint\print_basic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

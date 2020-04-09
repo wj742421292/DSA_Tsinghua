@@ -79,9 +79,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="checkOrder_list.h" />
-    <ClInclude Include="crc_list.h" />
-    <ClInclude Include="increase_list.h" />
+    <ClInclude Include="..\_share\checkOrder_list.h" />
+    <ClInclude Include="..\_share\crc_list.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="listNode.h" />
     <ClInclude Include="List_implementation.h" />

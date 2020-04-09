@@ -36,13 +36,10 @@
     <ClInclude Include="list_test.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="checkOrder_list.h">
+    <ClInclude Include="..\_share\checkOrder_list.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="crc_list.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="increase_list.h">
+    <ClInclude Include="..\_share\crc_list.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

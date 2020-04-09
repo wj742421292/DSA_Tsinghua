@@ -208,12 +208,12 @@ Vector<T>::copyFrom(T const *A, Rank lo, Rank hi)
 //expand
 template <typename T>
 void
-expand()
+Vector<T>::expand()
 {
 	if (_size < _capacity) return;	//there is no need to expand
 	if (_capacity < DEFAULT_CAPACITY) _capacity = DEFAULT_CAPACITY;
 	T *oldelem = _elem;
-	_elem = new T[_capacity << 1];
+	_elem = new T[_capacity <<= 1];
 	for (int i = 0; i < _size; i++)
 		_elem[i] = oldelem[i];
 

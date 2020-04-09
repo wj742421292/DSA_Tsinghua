@@ -79,17 +79,26 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\_share\checkOrder_Elem.h" />
+    <ClInclude Include="..\_share\checkOrder_vector.h" />
     <ClInclude Include="..\_share\comparator.h" />
+    <ClInclude Include="..\_share\crc_Elem.h" />
+    <ClInclude Include="..\_share\crc_vector.h" />
+    <ClInclude Include="..\_share\double_Elem.h" />
+    <ClInclude Include="..\_share\hailstone_Elem.h" />
     <ClInclude Include="..\_share\rand.h" />
     <ClInclude Include="..\_share\release.h" />
     <ClInclude Include="..\_share\util.h" />
+    <ClInclude Include="permute.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="vector_bubble.h" />
     <ClInclude Include="vector_implementation.h" />
+    <ClInclude Include="vector_test.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\UniPrint\print_basic.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="vector.cpp" />
   </ItemGroup>
