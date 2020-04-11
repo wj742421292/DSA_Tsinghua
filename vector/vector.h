@@ -9,7 +9,7 @@
 #pragma once
 
 typedef	int Rank;	//秩
-#define	DEFAULT_CAPACITY	3	//向量默认初始容量
+#define	DEFAULT_CAPACITY	9	//向量默认初始容量
 
 template	<typename T>
 class Vector
@@ -28,6 +28,7 @@ protected:
 	Rank partition(Rank lo, Rank hi);
 	void quickSort(Rank lo, Rank hi);
 	void heapSort(Rank lo, Rank hi);
+	void shellSort(Rank lo, Rank hi); //希尔排序算法
 
 public:
 	//construct
@@ -51,7 +52,8 @@ public:
 	Rank search(T const &e, Rank lo, Rank high) const;
 
 	//write and read interface
-	T& operator[] (Rank r) const;
+	T& operator[] (Rank r); //重载下标操作符，可以类似于数组形式引用各元素
+	const T& operator[] (Rank r) const; //仅限于做右值的重载版本
 	Vector<T> & operator= (Vector<T> const &);
 	T remove(Rank r);
 	int remove(Rank lo, Rank hi);	//delete the elements between [lo, hi)

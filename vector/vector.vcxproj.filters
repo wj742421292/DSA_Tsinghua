@@ -69,6 +69,12 @@
     <ClInclude Include="permute.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="vector_bubbleSort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="vector_partition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

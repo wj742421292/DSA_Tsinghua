@@ -2,24 +2,24 @@
 #pragma once
 
 #include <stdio.h>	//c-style
-//#include "../huffman/huffChar.h"	//huffman hyper-char
-//#include "../BinTree/BinTree.h"	//binary tree
-//#include "../Huffman/HuffTree.h"	//huffman tree
-//#include "../BST/BST.h"	//binary search tree
-//#include "../AVL/AVL.h"	//AVL tree
-//#include "../Splay/Splay.h"	//splay tree
-//#include "../redBlack/redBlack.h"	//red black tree
-//#include "../Btree/Btree.h"	//binary search tree
-//#include "../Entry/Entry.h"	//entry
-//#include "../Skiplist/Skiplist.h"	//skip list
-//#include "../Skiplist/Quadlist.h"	//Quad list
-//#include "../Hashtable/Hashtable.h"	//Hash table 
-//#include "../PQ_List/PQ_List.h"	//Priority Queue based on list
-//#include "../PQ_ComplHeap/PQ_ComplHeap.h"	//Priority Queue based on complete heap
-//#include "../PQ_ComplHeap/PQ_ComplHeap.h"	//Priority Queue based on complete heap
-//#include "../PQ_LeftHeap/PQ_LeftHeap.h"	//Priority Queue based on left heap
-//#include "../graph/Graph.h"
-//#include "../graphMatrix/GraphMatrix.h"	//Graph based on Matrix
+//#include "huffman/huffChar.h"	//huffman hyper-char
+//#include "BinTree/BinTree.h"	//binary tree
+//#include "Huffman/HuffTree.h"	//huffman tree
+//#include "BST/BST.h"	//binary search tree
+//#include "AVL/AVL.h"	//AVL tree
+//#include "Splay/Splay.h"	//splay tree
+//#include "redBlack/redBlack.h"	//red black tree
+//#include "Btree/Btree.h"	//binary search tree
+//#include "Entry/Entry.h"	//entry
+//#include "Skiplist/Skiplist.h"	//skip list
+//#include "Skiplist/Quadlist.h"	//Quad list
+//#include "Hashtable/Hashtable.h"	//Hash table 
+//#include "PQ_List/PQ_List.h"	//Priority Queue based on list
+//#include "PQ_ComplHeap/PQ_ComplHeap.h"	//Priority Queue based on complete heap
+//#include "PQ_ComplHeap/PQ_ComplHeap.h"	//Priority Queue based on complete heap
+//#include "PQ_LeftHeap/PQ_LeftHeap.h"	//Priority Queue based on left heap
+//#include "graph/Graph.h"
+//#include "graphMatrix/GraphMatrix.h"	//Graph based on Matrix
 
 
 template <typename T>

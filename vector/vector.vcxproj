@@ -94,7 +94,9 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="vector.h" />
     <ClInclude Include="vector_bubble.h" />
+    <ClInclude Include="vector_bubbleSort.h" />
     <ClInclude Include="vector_implementation.h" />
+    <ClInclude Include="vector_partition.h" />
     <ClInclude Include="vector_test.h" />
   </ItemGroup>
   <ItemGroup>

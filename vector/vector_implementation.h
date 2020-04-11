@@ -4,6 +4,10 @@
 #include "../_share/release.h"
 #include "../_share/util.h"
 
+#include "vector_bubble.h"
+#include "vector_bubblesort.h"
+#include "vector_partition.h"
+
 //read_only interface begin
 
 //disordered
@@ -45,6 +49,13 @@ Vector<T>::search(T const &e, Rank lo, Rank hi) const
 
 template <typename T>
 T& 
+Vector<T>::operator[] (Rank r)
+{
+	return _elem[r];	//assert 0<r<_size
+}
+
+template <typename T>
+const T& 
 Vector<T>::operator[] (Rank r) const
 {
 	return _elem[r];	//assert 0<r<_size
@@ -95,12 +106,13 @@ template <typename T>
 void
 Vector<T>::sort(Rank lo, Rank hi)	//vector interval sort
 {
-	switch (rand() % 5) {
+	switch (rand() % 6) {
 	case 1: bubbleSort(lo, hi); break;
 	case 2: selectSort(lo, hi); break;
 	case 3: mergeSort(lo, hi); break;
 	case 4: heapSort(lo, hi); break;
 	case 5: quickSort(lo, hi); break;
+	default: quickSort(lo, hi); break;
 	}
 }
 
@@ -143,24 +155,33 @@ template <typename T>
 bool
 Vector<T>::bubble(Rank lo, Rank hi)
 {
-	bool ordered = true;
-	while (++lo < hi)
-	{
-		if (_elem[lo - 1]>_elem[lo])
-		{
-			ordered = false;
-			swap(_elem[lo - 1], elem[lo]);
-		}
-	}
-	return ordered;
+	return bubbleSlow(_elem, lo, hi);
 }
 
+//partition
+template <typename T>
+Rank
+Vector<T>::partition(Rank lo, Rank hi)
+{
+	switch (rand() % 5) {
+	case 0: partitionA(_elem, lo, hi); break;
+	case 1: partitionA1(_elem, lo, hi); break;
+	case 2: partitionB(_elem, lo, hi); break;
+	case 3: partitionB1(_elem, lo, hi); break;
+	case 4: partitionC(_elem, lo, hi); break;
+	}
+}
 //bubblesort
 template <typename T>
 void
 Vector<T>::bubbleSort(Rank lo, Rank hi)
 {
-	while (lo < (hi = bubble(lo, hi)));
+	switch (rand() % 4) {
+	case 0: bubbleSortOld(_elem, lo, hi); break;
+	case 1: bubbleSortA(_elem, lo, hi); break;
+	case 2: bubbleSortB(_elem, lo, hi); break;
+	case 3: bubbleSortC(_elem, lo, hi); break;
+	}
 }
 
 
@@ -169,12 +190,41 @@ template <typename T>
 void
 Vector<T>::selectSort(Rank lo, Rank hi)
 {
-	whille(lo < --hi)
+	while(lo < --hi)
 	{
 		swap(_elem[max(lo, hi)], _elem[hi]);
 	}
 }
 
+//quickSort
+template <typename T>
+void
+Vector<T>::quickSort(Rank lo, Rank hi) {
+	/*DSA*/ //printf("\tQUICKsort [%3d,%3d)\n", lo, hi);
+	if (hi - lo < 2) return;
+	Rank mid = partition(lo, hi);
+	quickSort(lo, mid);
+	quickSort(mid + 1, hi);
+}
+
+//shellSort
+template <typename T>
+void
+Vector<T>::shellSort(Rank lo, Rank hi){
+	/*DSA*/
+	printf("\tSHELLsort [%3d,%3d)\n", lo, hi);
+	for(int d=0x3FFFFFFF; 0<d; d>>=1)
+		for (int j = lo + d; j < hi; j++) {
+			T x = _elem[j];
+			int i = j - d;
+			while(lo<=i && _elem[i]>x)
+			{
+				_elem[i + d] = _elem[i];
+				i -= d;
+			}
+			_elem[i + d] = x;
+		}
+}
 
 template <typename T>
 Rank
@@ -248,4 +298,29 @@ void
 Vector<T>::traverse(VST& visit)
 {
 	for (int i = 0; i < _size; i++) visit(_elem[i]);
+}
+
+template <typename T>
+void
+Vector<T>::merge(Rank lo, Rank mid, Rank hi) {
+	T* A = _elem + lo;	//A[0,hi-lo) = _elem[lo, hi)
+	int lb = mi - lo;
+	T* B = new T[lb];	//B[0,1b) = _elem[lo, mid)
+	for (Rank i = 0; i < lb; i++) B[i] = A[i];
+	int lc = hi - mid;
+	T* C = new T[lc];	//C[0,1c) = _elem[mid, hi)
+	for (Rank i = 0, j = 0, k = 0; j < lb;)
+		A[i++] = (lc <= k || B[j] <= C[k]) ? B[j++] : C[k++];
+	delete[]B;
+}
+
+template <typename T>
+void
+Vector<T>::mergeSort(Rank lo, Rank hi) {
+	/*DSA*/	//printf("\tMERGEsort [%3d,%3d)\n",lo,hi);
+	if (hi - lo < 2) return;
+	int mid = (lo + hi) / 2;
+	mergeSort(lo, mi);
+	mergeSort(mi, hi);
+	merge(lo, mid, hi);
 }
