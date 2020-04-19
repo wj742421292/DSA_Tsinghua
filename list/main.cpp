@@ -11,7 +11,7 @@ int testID = 0;		//测试编号
 ******************************************************************************************/
 template <typename T> //元素类型
 void randomList(List<T> & list, int n) { //在[0, 2n)中选择n个偶数，随机插入列表
-	Posi(T) p =
+	ListNodePosi(T) p =
 		(rand() % 2) ?
 		list.insertAsLast(rand() % (T)n * 2) :
 		list.insertAsFirst(rand() % (T)n * 2);

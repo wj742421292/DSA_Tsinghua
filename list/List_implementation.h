@@ -1,8 +1,12 @@
 #pragma once
 
-#include "crc_list.h"
-#include "checkOrder_list.h"
-#include "increase_list.h"
+#include "../_share/release.h"
+#include "../_share/util.h"
+#include "List_insert.h"
+#include "List_reverse.h"
+#include "../_share/crc_list.h"
+#include "../_share/checkOrder_list.h"
+#include "../_share/increase_list.h"
 #include "listNode.h"
 
 //initialize
@@ -33,7 +37,7 @@ List<T>::clear()
 // copy
 template <typename T>
 void
-List<T>::copyNode(Posi(T) p, int n)
+List<T>::copyNode(ListNodePosi(T) p, int n)
 {
 	init();	//创建头尾哨兵并初始化
 	while (n--)
@@ -46,12 +50,12 @@ List<T>::copyNode(Posi(T) p, int n)
 //有序链表归并, 当前链表自p起的n个元素 与 链表L自q的m个元素归并
 template <typename T>
 void
-List<T>::merge(Posi(T) &p, int n, List<T> &L, Posi(T) q, int m)
+List<T>::merge(ListNodePosi(T) &p, int n, List<T> &L, ListNodePosi(T) q, int m)
 {
 	//assert this.valid(p)&& rank(p)+n<=size && this.sorted(p,n) p合法且其后n个节点均在链表中, 且有序
 	//assert L.valid(q) && rank(q)+m<=L._size && L.sorted(q,m)
 
-	Posi(T) pp = p->pred;	//前驱或header
+	ListNodePosi(T) pp = p->pred;	//前驱或header
 	while (m>0)	//q仍在区间中
 		if ((n > 0) && p->data <= q->data)
 		{
@@ -71,13 +75,13 @@ List<T>::merge(Posi(T) &p, int n, List<T> &L, Posi(T) q, int m)
 //有序链表归并, 当前链表自p起的n个元素 与 链表L自q的m个元素归并
 template <typename T>
 void
-List<T>::mergeSort(Posi(T) &p, int n)
+List<T>::mergeSort(ListNodePosi(T) &p, int n)
 {
 	//assert valid(p) && rank(p) + n <=_size
-	printf("\tMerge Sort [%3d]\n", n);
+	//printf("\tMerge Sort [%3d]\n", n);
 	if (n < 2) return;
 	int m = n >> 1;	//以中点为界
-	Posi(T) q = p;
+	ListNodePosi(T) q = p;
 	for (int i = 0; i < m; i++)
 		q = q->succ;	//均分链表
 	mergeSort(p, m);
@@ -89,19 +93,35 @@ List<T>::mergeSort(Posi(T) &p, int n)
 //选择排序, 对起始于p的n个元素排序
 template <typename T>
 void
-List<T>::selectSort(Posi(T) p, int n)
+List<T>::selectSort(ListNodePosi(T) p, int n)
 {
 	//assert valid(p) && rank(p)+n <= _size
-	printf("Selection Sort.. \n");
+	//printf("Selection Sort.. \n");
+	ListNodePosi(T) head = p->head;
+	ListNodePosi(T) tail = p;
+	for (int i = 0; i < n; i++)
+		tail = tail->succ;
+	while (1 < n) {
+		ListNodePosi(T) max = selectMax(head->succ, n);
+		insertPred(tail, remove(max));
+		//swp(tail->pred->data, selectMax(head->succ.n)->data);
+		tail = tail->pred;
+		n--;
+	}
 }
 
 //插入排序, 对起始于p的n个元素排序
 template <typename T>
 void
-List<T>::insertSort(Posi(T) p, int n)
+List<T>::insertSort(ListNodePosi(T) p, int n)
 {
 	//assert valid(p) && rank(p)+n <= _size
-	printf("Insertion Sort.. \n");
+	//printf("Insertion Sort.. \n");
+	for (int r = 0; r < n; r++) {
+		insertPred(search(p->data, r, p), p->data);	//search the proper position to insert
+		p = p->succ;
+		remove(p->pred);
+	}
 }
 
 /***********************************************************************
@@ -117,15 +137,18 @@ List<T>::List(List<T> const &L)	//整体复制
 }
 
 template <typename T>
-List<T>::List(Posi(T) p, int n)
+List<T>::List(ListNodePosi(T) p, int n)
 {
 	copyNode(p, n);
 }
 
 template <typename T>
-List<T>::List(List<T> const &L, int r, int n)
+List<T>::List(List<T> const &L, Rank r, int n)
 {
-	copyNode(L[r], n);
+	//copyNode(L[r], n);
+	ListNodePosi(T) p = L.first();
+	while (0 < r--)	p = p->succ;
+	copyNode(p, n);
 }
 
 template <typename T>
@@ -148,7 +171,7 @@ List<T>::~List()
 //remove
 template <typename T>
 T
-List<T>::remove(Posi(T) p)
+List<T>::remove(ListNodePosi(T) p)
 {	//删除有效节点p, 并返回其值
 	T e = p->data;	//备份该节点数据, 假设类型T可直接赋值
 	p->pred->succ = p->succ;
@@ -158,44 +181,11 @@ List<T>::remove(Posi(T) p)
 	return e;
 }
 
-//insert
-template <typename T>
-Posi(T)
-List<T>::insertAsFirst(T const &e)
-{
-	_size++;
-	return header->InsertAsSucc(e);	//作为头哨兵的后继插入, 即首节点
-}
-
-template <typename T>
-Posi(T)
-List<T>::insertAsLast(T const &e)
-{
-	_size++;
-	return trailer->InsertAsPred(e);	//作为尾哨兵的前驱插入, 即尾节点
-}
-
-template <typename T>
-Posi(T)
-List<T>::insertPred(Posi(T) p, T const &e)
-{
-	_size++;
-	return p->InsertAsPred(e);	//作为前驱插入
-}
-
-template <typename T>
-Posi(T)
-List<T>::insertSucc(Posi(T) p, T const &e)
-{
-	_size++;
-	return p->InsertAsSucc(e);	//作为后继插入
-}
-
 template <typename T>
 void
-List<T>::sort(Posi(T) p, int n)	//区间排序
+List<T>::sort(ListNodePosi(T) p, int n)	//区间排序
 {
-	/*switch (rand() % 3)
+	switch (rand() % 3)
 	{
 	case 1:
 		insertSort(p, n) break;
@@ -203,23 +193,28 @@ List<T>::sort(Posi(T) p, int n)	//区间排序
 		selectSort(p, n) break;
 	default:
 		mergeSort(p, n); break;
-	}*/
-	mergeSort(p, n);
+	}
 }
 
 template <typename T>
 int
 List<T>::deduplicate()
 {
-	if (_size < 2)	return 0;
+	//if (_size < 2)	return 0;
+	//int oldSize = _size;
+	//ListNodePosi(T) p = header;
+	//Rank r = 0;
+	//while (trailer != (p = p->succ))
+	//{
+	//	ListNodePosi(T) q = find(p->data, r, p);	//在p的r个前驱中查找重复
+	//	q ? remove(q) : r++;
+	//}
 	int oldSize = _size;
-	Posi(T) p = header;
-	Rank r = 0;
-	while (trailer != (p = p->succ))
-	{
-		Posi(T) q = find(p->data, r, p);	//在p的r个前驱中查找重复
-		q ? remove(q) : r++;
-	}
+	ListNodePosi(T) p = first();
+	for (Rank r = 0; p != trailer; p = p->succ)	//O(n)
+		if (ListNodePosi(T) q = find(p->data, r, p))
+			remove(q);
+		else r++;
 	return oldSize - _size;
 }
 
@@ -229,8 +224,8 @@ List<T>::uniquify()
 {
 	if (_size < 2) return 0;
 	int oldSize = _size;
-	Posi(T) p = first();	//p为各区段起点, q为其后继
-	Posi(T) q;
+	ListNodePosi(T) p = first();	//p为各区段起点, q为其后继
+	ListNodePosi(T) q;
 	while (trailer != (q = p->succ))
 	{
 		if (p->data != q->data) p = q;	//反复比较紧邻节点对
@@ -239,6 +234,18 @@ List<T>::uniquify()
 	return oldSize - _size;
 }
 
+template <typename T>
+void
+List<T>::reverse() {
+	switch (rand() % 3) {
+	case 1:
+		reverse1(); break;
+	case 2:
+		reverse2(); break;
+	default:
+		reverse3(); break;
+	}
+}
 
 
 /***********************************************************************
@@ -253,7 +260,7 @@ T&
 List<T>::operator[] (Rank r) const
 {
 	//assert 0<= r <= _size
-	Posi(T) p = first();
+	ListNodePosi(T) p = first();
 	while (r-- > 0)
 		p = p->succ;
 	return p->data;
@@ -274,8 +281,8 @@ List<T>::disordered() const
 
 //无序区间查找
 template <typename T>
-Posi(T)
-List<T>::find(T const &e, int n, Posi(T) p) const
+ListNodePosi(T)
+List<T>::find(T const &e, int n, ListNodePosi(T) p) const
 {
 	//在无序链表的节点p的n个前驱中查找等于e的最后者
 	while (n--)
@@ -289,22 +296,29 @@ List<T>::find(T const &e, int n, Posi(T) p) const
 
 //有序区间查找
 template <typename T>
-Posi(T)
-List<T>::search(T const &e, int n, Posi(T)) const
+ListNodePosi(T)
+List<T>::search(T const &e, int n, ListNodePosi(T) p) const
 {
 	//在有序链表p节点的n个前驱中, 查找不大于e的最后者
-	printf("searching for ");
-	while (n-- >= 0)
-	{
-		if ((p = p->pred)->data <= e) break;
-	}
+	printf("searching for ");	print(e); printf(" :\n");
+	//while (n-- >= 0)
+	//{
+	//	if ((p = p->pred)->data <= e) break;
+	//}
+	do {
+		p = p->pred; n--;
+		printf("-->%4d", p->data);
+	} while ((-1 < n) && (e < p->data));
 	return p;
 }	//失败时, 返回左边界的前驱, 调用者需通过valid()判断成功与否
 
 template <typename T> //从起始于位置p的n个元素中选出最大者
-Posi(T) 
-List<T>::selectMax(Posi(T) p, int n) const{
-	ListNodePosi(T) max = p; //最大者暂定为首节点p
+ListNodePosi(T) 
+List<T>::selectMax(ListNodePosi(T) p, int n) {
+	ListNodeListNodePosi(T) max = p; //最大者暂定为首节点p
+	for (ListNodePosi(T) cur = p; 1 < n; n--)
+		if (!lt((cur = cur - succ)->data, max->data))
+			max = cur;
 	return max; //返回最大节点位置
 }
 
@@ -318,7 +332,7 @@ template <typename T>
 void
 List<T>::traverse(void(*visit)(T&))	//函数指针
 {
-	for (Posi(T) p = header->succ; p != trailer; p = p->succ)
+	for (ListNodePosi(T) p = header->succ; p != trailer; p = p->succ)
 		visit(p->data);
 }
 
@@ -326,6 +340,6 @@ template <typename T> template <typename VST>	//元素类型, 操作器
 void
 List<T>::traverse(VST &visit)	//函数对象
 {
-	for (Posi(T) p = header->succ; p != trailer; p = p->succ)
+	for (ListNodePosi(T) p = header->succ; p != trailer; p = p->succ)
 		visit(p->data);
 }

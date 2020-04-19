@@ -42,6 +42,12 @@
     <ClInclude Include="..\_share\crc_list.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="List_insert.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="List_reverse.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
